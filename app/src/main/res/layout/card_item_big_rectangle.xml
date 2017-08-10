@@ -1,92 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cv_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardBackgroundColor="#ffffff"
-    app:cardCornerRadius="8dp"
+    app:cardCornerRadius="5dp"
     app:cardElevation="5dp">
 
-    <android.support.percent.PercentFrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <android.support.constraint.ConstraintLayout
-            app:layout_widthPercent="100%"
-            app:layout_aspectRatio="175%">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
             <TextView
-                android:id="@+id/card_item_title"
+                android:id="@+id/task_item_title"
                 style="@style/Base.TextAppearance.AppCompat.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
+                android:text="@string/enter_a_title"
                 app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/card_item_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="6dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
                 android:text="2017/07/23"
                 android:textSize="15sp"
-                app:layout_constraintBottom_toTopOf="@+id/card_item_image"
-                app:layout_constraintRight_toLeftOf="@+id/card_item_group" />
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/card_item_group"
+                android:id="@+id/card_item_content_brief"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="7dp"
-                android:layout_marginTop="8dp"
-                android:textSize="15sp"
-                android:text="@string/card_group_inbox"
-                app:layout_constraintBottom_toTopOf="@+id/card_item_image"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.571" />
-
-            <ImageView
-                android:id="@+id/card_item_image"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:contentDescription="@string/card_image"
-                android:scaleType="centerCrop"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/card_item_title"
-                app:srcCompat="@drawable/background" />
-
-
-            <TextView
-                android:id="@+id/card_item_content"
-                android:layout_width="0dp"
-                android:layout_height="65dp"
-                app:layout_heightPercent="35%"
-                android:layout_marginBottom="8dp"
-                android:background="#88ffffff"
-                android:padding="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/enter_the_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Small"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
-
-
+                app:layout_constraintTop_toBottomOf="@+id/task_item_title"
+                app:layout_constraintVertical_bias="0.0" />
         </android.support.constraint.ConstraintLayout>
 
-    </android.support.percent.PercentFrameLayout>
+        <android.support.percent.PercentFrameLayout
+            android:id="@+id/card_content_detail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <android.support.constraint.ConstraintLayout
+                app:layout_aspectRatio="250%"
+                app:layout_widthPercent="100%"
+                android:layout_marginBottom="8dp">
+
+                <ImageView
+                    android:id="@+id/card_item_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:contentDescription="@string/card_image"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:srcCompat="@drawable/background_inbox" />
+
+                <TextView
+                    android:id="@+id/card_item_content"
+                    android:layout_width="0dp"
+                    android:layout_height="80dp"
+                    android:background="#88ffffff"
+                    android:padding="8dp"
+                    android:text="@string/enter_the_content"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Light.Widget.PopupMenu.Small"
+                    app:layout_heightPercent="35%"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
+
+
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.percent.PercentFrameLayout>
+
+    </LinearLayout>
+
 </android.support.v7.widget.CardView>
 

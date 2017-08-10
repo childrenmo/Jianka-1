@@ -8,9 +8,9 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recent_recycler_view"
         android:layout_width="match_parent"
+        android:layout_margin="2dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp"
         android:scrollbars="vertical"
-        android:layout_marginRight="5dp" />
+         />
 
 </FrameLayout>

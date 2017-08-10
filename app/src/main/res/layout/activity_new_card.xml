@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/card_grade"
-            android:textSize="22sp" />
+            android:textSize="15sp" />
 
         <RadioButton
             android:id="@+id/task_regular"
@@ -88,10 +88,10 @@
         <TextView
             android:id="@+id/new_card_task_indicator"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="2dp"
             android:layout_marginLeft="2dp"
-            android:textSize="22sp"
+            android:textSize="15sp"
             android:text="@string/task_regular" />
 
     </RadioGroup>
@@ -145,7 +145,7 @@
                 android:id="@+id/iv_image"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:scaleType="centerCrop"
+                android:scaleType="center"
                 android:contentDescription="" />
         </LinearLayout>
     </ScrollView>

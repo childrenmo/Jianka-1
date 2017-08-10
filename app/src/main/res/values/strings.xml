@@ -80,7 +80,7 @@
     <string name="pref_rate_the_app_label">在应用市场评分</string>
     <string name="action_refresh">刷新/同步</string>
     <string name="enter_a_title">卡片标题</string>
-    <string name="enter_the_content">请输入记录的文字……</string>
+    <string name="enter_the_content">记录此刻的想法……</string>
     <string name="time_example">2017年7月20日   9:36</string>
     <string name="new_card_activity">创建卡片</string>
     <string name="card_theme_color">卡色</string>
@@ -104,7 +104,6 @@
 
     <string name="card_theme_blue">蓝</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tab_card_group">所有卡组</string>
     <string name="card_group_inbox">收信箱</string>
@@ -123,4 +122,6 @@
     <string name="task_unimportant_not_emergent">不重要-不紧急</string>
     <string name="card_insert_image">插入图片</string>
     <string name="input_card_group_title">卡组名</string>
+    <string name="choose_operation">选择操作</string>
+    <string name="click_to_choose_cover">点击选择封面</string>
 </resources>

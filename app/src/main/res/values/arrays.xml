@@ -49,14 +49,14 @@
         <item>@string/default_group_unimportant_not_emergent</item>
     </string-array>
     <string-array name="default_group_path">
-        <item>jianka/image</item>
+        <item>jianka/images</item>
         <item>jianka/log</item>
         <item>jianka/recyclebin</item>
         <item>jianka/data/收信箱</item>
         <item>jianka/task/很重要-很紧急</item>
         <item>jianka/task/很重要-不紧急</item>
         <item>jianka/task/不重要-很紧急</item>
-        <item>jianka/task/不紧急-不重要</item>
+        <item>jianka/task/不重要-不紧急</item>
     </string-array>
     <string-array name="card_group_options">
         <item>删除</item>

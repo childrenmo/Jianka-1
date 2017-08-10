@@ -2,6 +2,7 @@ package tech.jianka.fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import tech.jianka.activity.NewCardGroupActivity;
 import tech.jianka.activity.R;
 import tech.jianka.adapter.GroupAdapter;
 import tech.jianka.data.GroupData;
@@ -86,7 +88,7 @@ public class GroupFragment extends Fragment implements GroupAdapter.ItemClickLis
         layoutManager = new GridLayoutManager(getActivity(), 2, GridLayout.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
         GroupData data = new GroupData();
-        adapter = new GroupAdapter(data.getItemGroup(), GroupAdapter.GROUP, this);
+        adapter = new GroupAdapter(data.getGroup(), this);
         recyclerView.setAdapter(adapter);
     }
 
@@ -133,11 +135,34 @@ public class GroupFragment extends Fragment implements GroupAdapter.ItemClickLis
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case 0:
-                                if (!adapter.removeItem(clickedCardIndex)) {
-                                    Toast.makeText(getActivity(), "删除失败", Toast.LENGTH_LONG).show();
+                                int result = adapter.removeItem(clickedCardIndex);
+                                if (result == GroupData.INBOX) {
+                                    Toast.makeText(getActivity(),"收信箱不能被删除",Toast.LENGTH_SHORT).show();
+                                } else if (result == GroupData.NOT_EMPTY) {
+                                    AlertDialog confirmDelete = new AlertDialog.Builder(getContext()).setTitle("删除确认")
+                                            .setMessage("卡组不为空,继续删除吗?")
+                                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                }
+                                            })
+                                            .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    adapter.removeGroupAndCards(clickedCardIndex);
+                                                }
+                                            })
+                                            .create();             //创建AlertDialog对象
+                                    confirmDelete.show();                    //显示对话框
+                                } else if (result == GroupData.DELETE_DONE) {
+                                    Toast.makeText(getActivity(), "已删除", Toast.LENGTH_SHORT);
                                 }
                                 break;
                             case 1:
+                                Intent renameGroup = new Intent(getActivity(), NewCardGroupActivity.class);
+                                renameGroup.putExtra("RENAME_GROUP", clickedCardIndex);
+                                startActivity(renameGroup);
+
                                 // TODO: 2017/8/6 rename
                                 break;
                             case 2:

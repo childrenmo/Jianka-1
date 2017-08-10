@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
+    android:layout_margin="1dp"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardBackgroundColor="#ffffff"
-    app:cardCornerRadius="0dp"
+    app:cardCornerRadius="4dp"
     app:cardElevation="0dp">
 
     <android.support.percent.PercentRelativeLayout
@@ -15,7 +15,7 @@
         android:layout_height="match_parent">
 
         <android.support.constraint.ConstraintLayout
-            app:layout_aspectRatio="120%"
+            app:layout_aspectRatio="150%"
             app:layout_widthPercent="100%">
 
             <ImageView
@@ -29,7 +29,6 @@
                 android:layout_marginStart="0dp"
                 android:layout_marginTop="0dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/background"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -46,8 +45,7 @@
                 android:layout_marginLeft="0dp"
                 android:layout_marginRight="0dp"
                 android:layout_marginStart="0dp"
-                android:paddingStart="8dp"
-                android:paddingLeft="8dp"
+                android:padding="8dp"
                 android:background="#88ffffff"
                 android:text="@string/title_holder"
                 android:textColor="#000000"

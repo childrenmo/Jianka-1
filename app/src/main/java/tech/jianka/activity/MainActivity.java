@@ -19,6 +19,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import java.io.File;
 
@@ -30,7 +31,7 @@ import tech.jianka.fragment.TaskFragment;
 import tech.jianka.utils.PreferenceHelper;
 
 import static tech.jianka.fragment.FragmentManager.fragmentList;
-import static tech.jianka.utils.CardUtil.getSDCardPath;
+import static tech.jianka.utils.ItemUtils.getSDCardPath;
 import static tech.jianka.utils.PreferenceHelper.getBoolean;
 
 public class MainActivity extends AppCompatActivity
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity
         if(flag){
             String[] groups = getResources().getStringArray(R.array.default_group_path);
             for (String group : groups) {
-                new File(getSDCardPath()+File.separator + group).mkdirs();
+                new File(getSDCardPath(group)).mkdirs();
             }
             getSharedPreferences("tech.jianka", MODE_PRIVATE).edit().putBoolean("isFirstRun", false).apply();
         }
@@ -170,10 +171,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void searchCard() {
+        Toast.makeText(this, "还没有实现,敬请期待", Toast.LENGTH_SHORT);
         // TODO: 2017/7/22
     }
 
     private void showHiddenCardList() {
+        Toast.makeText(this, "还没有实现,敬请期待", Toast.LENGTH_SHORT);
         // TODO: 2017/7/22
     }
 

@@ -7,9 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.GridLayout;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,16 +29,18 @@ import tech.jianka.data.TaskData;
  * Use the {@link TaskFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TaskFragment extends Fragment implements TaskAdapter.ItemClickListener ,View.OnClickListener,View.OnLongClickListener{
+public class TaskFragment extends Fragment implements TaskAdapter.ItemClickListener {
     public static final String ARG_FRAGMENT_TYPE = "TYPE";
     private int fragmentType;
 
     private OnFragmentInteractionListener mListener;
     private View view;
 
-    private RecyclerView recyclerView;
+    private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager layoutManager;
-    public TaskAdapter adapter;
+    public TaskAdapter mAdapter;
+
+    private TaskData mData;
     public TaskFragment() {
         // Required empty public constructor
     }
@@ -78,13 +79,14 @@ public class TaskFragment extends Fragment implements TaskAdapter.ItemClickListe
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        mData = new TaskData();
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.task_recycler_view);
-        layoutManager = new GridLayoutManager(getActivity(), 2, GridLayout.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
-        TaskData data = new TaskData();
-        adapter = new TaskAdapter(data.getTaskGroup(), TaskAdapter.TASK_GROUP, this);
-        recyclerView.setAdapter(adapter);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.task_recycler_view);
+        layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mAdapter = new TaskAdapter(mData.getData(), this);
+        mRecyclerView.setAdapter(mAdapter);
+
     }
 
 
@@ -123,7 +125,7 @@ public class TaskFragment extends Fragment implements TaskAdapter.ItemClickListe
     public void onItemLongClick(final int clickedCardIndex) {
         String[] options = getActivity().getResources().getStringArray(R.array.task_group_options);
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        AlertDialog alertDialog = builder.setTitle("选择操作")
+        AlertDialog alertDialog = builder.setTitle(getString(R.string.choose_operation))
                 .setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -143,33 +145,10 @@ public class TaskFragment extends Fragment implements TaskAdapter.ItemClickListe
     }
 
     @Override
-    public void onClick(View v) {
-
+    public void onTaskCheck(int clickedPosition) {
+        mAdapter.removeItem(clickedPosition);
     }
 
-    @Override
-    public boolean onLongClick(View v) {
-        String[] options = getActivity().getResources().getStringArray(R.array.task_group_options);
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        AlertDialog alertDialog = builder.setTitle("选择操作")
-                .setItems(options, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0:
-                                break;
-                            case 1:
-                                // TODO: 2017/8/6 rename
-                                break;
-                            case 2:
-                                // TODO: 2017/8/6 修改封面
-                                break;
-                        }
-                    }
-                }).create();
-        alertDialog.show();
-        return true;
-    }
 
     /**
      * This interface must be implemented by activities that contain this

@@ -16,16 +16,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import java.util.List;
-
 import tech.jianka.activity.NewCardActivity;
 import tech.jianka.activity.R;
-import tech.jianka.adapter.ItemAdapter;
-import tech.jianka.data.Item;
+import tech.jianka.adapter.CardAdapter;
+import tech.jianka.data.RecentData;
 import tech.jianka.utils.SpaceItemDecoration;
-
-import static tech.jianka.utils.CardUtil.getChildItems;
-import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
 
 /**
  * Created by Richa on 2017/8/6.
@@ -39,10 +34,9 @@ import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
  * Use the {@link RecentFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RecentFragment extends Fragment implements ItemAdapter.ItemClickListener {
+public class RecentFragment extends Fragment implements CardAdapter.ItemClickListener {
     public static final String ARG_FRAGMENT_TYPE = "TYPE";
 
-    private static Toast mToast;
 
     private int fragmentType;
 
@@ -51,10 +45,10 @@ public class RecentFragment extends Fragment implements ItemAdapter.ItemClickLis
     private AlertDialog alertDialog;
     private AlertDialog.Builder builder;
 
-    RecyclerView recyclerView;
+    RecyclerView mRecyclerView;
     RecyclerView.LayoutManager layoutManager;
 
-    public ItemAdapter adapter;
+    public CardAdapter adapter;
 
     public RecentFragment() {
         // Required empty public constructor
@@ -94,14 +88,13 @@ public class RecentFragment extends Fragment implements ItemAdapter.ItemClickLis
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        recyclerView = (RecyclerView) view.findViewById(R.id.recent_recycler_view);
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recent_recycler_view);
         layoutManager = new LinearLayoutManager(getActivity(), LinearLayout.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
-        String path = getSpecifiedSDPath("jianka/data/收信箱");
-        List<Item> items = getChildItems(path);
-        adapter = new ItemAdapter(items, ItemAdapter.CARD, this);
-        recyclerView.setAdapter(adapter);
-        recyclerView.addItemDecoration(new SpaceItemDecoration(5));
+        mRecyclerView.setLayoutManager(layoutManager);
+        RecentData data = new RecentData();
+        adapter = new CardAdapter(data.getData(), mRecyclerView, this);
+        mRecyclerView.setAdapter(adapter);
+        mRecyclerView.addItemDecoration(new SpaceItemDecoration(5));
     }
 
 
@@ -133,9 +126,7 @@ public class RecentFragment extends Fragment implements ItemAdapter.ItemClickLis
     public void onItemClick(int clickedCardIndex) {
         // TODO: 2017/7/26 处理卡片单击事件
         Intent intent = new Intent(getActivity(), NewCardActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("CARD_DETAILS", adapter.getItem(clickedCardIndex));
-        intent.putExtras(bundle);
+        intent.putExtra("CARD_DETAILS", clickedCardIndex);
         startActivity(intent);
     }
 
@@ -155,7 +146,7 @@ public class RecentFragment extends Fragment implements ItemAdapter.ItemClickLis
                                 break;
                             case 1:
                                 if (!adapter.removeItem(clickedCardIndex)) {
-                                    mToast.makeText(getActivity(), "删除失败", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getActivity(), "删除失败", Toast.LENGTH_LONG).show();
                                 }
 
                                 break;

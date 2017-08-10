@@ -1,5 +1,6 @@
 package tech.jianka.adapter;
 
+import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,13 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import tech.jianka.activity.R;
-import tech.jianka.data.Item;
-
-import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
+import tech.jianka.data.DataType;
+import tech.jianka.data.Group;
+import tech.jianka.data.GroupData;
 
 /**
  * Created by Richard on 2017/7/28.
@@ -22,27 +22,12 @@ import static tech.jianka.utils.CardUtil.getSpecifiedSDPath;
 
 public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public static final int GROUP = 1;
-    public static final int CARD = 2;
-    public static final int CARD_AND_GROUP = 3;
-    public static final int TASK_GROUP = 4;
-    public static final int TASK_AND_GROUP = 5;
-    public static final int TASK_IMPORTANT_EMERGENT = 6;
-    public static final int TASK_IMPORTANT_NOT_EMERGENT = 7;
-    public static final int TASK_UNIMPORTANT_EMERGENT = 8;
-    public static final int TASK_UNIMPORTANT_NOT_EMERGENT = 9;
-    public static final int ITEM_ONE_COLOMN = 40;
-    public static final int ITEM_TWO_COLOMN = 785;
-    public static final int CARD_TWO_COLUMN = 20;
-
     private ItemClickListener listener;
-    private List<Item> items;
-    private int adapterType = 0;
+    private List<Group> groups;
 
-    public GroupAdapter(List<Item> items, int adapterType, ItemClickListener listener) {
+    public GroupAdapter(List<Group> groups, ItemClickListener listener) {
         this.listener = listener;
-        this.items = items;
-        this.adapterType = adapterType;
+        this.groups = groups;
     }
 
     @Override
@@ -56,48 +41,48 @@ public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof GroupViewHolder) {
-            ((GroupViewHolder) holder).mTitle.setText(items.get(position).getFileName());
+            String name = groups.get(position).getFileName();
+            String path = groups.get(position).getCoverPath();
+            ((GroupViewHolder) holder).mTitle.setText(name);
+            if (new File(path).exists()) {
+                ((GroupViewHolder) holder).mImage.setImageBitmap(BitmapFactory.decodeFile(path));
+            }
         }
     }
 
     @Override
     public int getItemViewType(int position) {
-        return GROUP;
+        return DataType.GROUP;
     }
 
     @Override
     public int getItemCount() {
-        return items == null ? 0 : items.size();
+        return groups == null ? 0 : groups.size();
     }
 
-    public void addItem(Item item) {
-        items.add(item);
-        try {
-            new File(getSpecifiedSDPath(item.getFilePath())).createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void addItem(Group group) {
+        groups.add(group);
+        GroupData.addGroup(group);
         notifyDataSetChanged();
     }
 
-    public boolean removeItem(int position) {
-        Item toDeleteItem = items.get(position);
-        // TODO: 2017/8/6 完善能不能删除的逻辑
-        String[] canNotDelete = {"收信箱", "任务"};
-        String toCompare = toDeleteItem.getFileName();
-        for (String name : canNotDelete) {
-            if (name.equals(toCompare)) {
-                return false;
-            }
+    public int removeItem(int position) {
+        int result = GroupData.removeGroup(position);
+        if (result == GroupData.DELETE_DONE) {
+            groups.remove(position);
+            notifyDataSetChanged();
         }
-        new File(items.get(position).getFilePath()).delete();
-        items.remove(position);
-        notifyDataSetChanged();
-        return true;
+        return result;
     }
 
-    public Item getItem(int clickedItemIndex) {
-        return items.get(clickedItemIndex);
+    public void removeGroupAndCards(int position) {
+        GroupData.removeGroupAndCards(position);
+        notifyDataSetChanged();
+    }
+
+    public void renameGroup(int index, String title) {
+        GroupData.renameGroup(index, title);
+        notifyDataSetChanged();
     }
 
     public class GroupViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -131,6 +116,7 @@ public class GroupAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
      */
     public interface ItemClickListener {
         void onItemClick(int clickedCardIndex);
+
         void onItemLongClick(int clickedCardIndex);
     }
 }
